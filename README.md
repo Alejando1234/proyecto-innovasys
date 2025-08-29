@@ -14,7 +14,7 @@ Las variables globales se gestionan en 'group_vars/all.yml'.
 ##Como Ejecutar
 
 1. **CLonar el repositorio**
-  git clone https://github.com/Alejandro1234/proyecto-innovasys.git
+  git clone https://github.com/Alejando1234/proyecto-innovasys.git
   cd proyecto-innovasys
 
 2. **Configurar el inventario**
