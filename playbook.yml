@@ -1,0 +1,8 @@
+---
+- name: Aprovisionar y configurar el servidor de InnovaSys
+  hosts: innovasys_servers
+  become: yes
+
+  roles:
+    - apache
+    - samba

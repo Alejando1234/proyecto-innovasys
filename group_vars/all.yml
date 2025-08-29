@@ -1,0 +1,11 @@
+---
+# Variables globales para el proyecto InnovaSys
+# Variables para el rol Apache
+nombre_empresa: "InnovaSys"
+
+
+# Variables para el rol Samba
+samba_shared_dir: /srv/samba/proyectos
+samba_group: desarrolladores
+samba_user: devuser1
+samba_user_password: Innova.2025

@@ -1,0 +1,43 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/samba
+- name: Asegurar que samba este instalado
+  ansible.builtin.apt:
+    name: samba
+    state: present
+
+- name: Crear el grupo para desarrolladores
+  ansible.builtin.group:
+    name: "{{ samba_group }}"
+    state: present
+
+- name: Crear el usuario de Samba sin shell de login
+  ansible.builtin.user:
+    name: "{{ samba_user }}"
+    group: "{{ samba_group }}"
+    shell: /sbin/nologin
+    state: present
+
+- name: Establecer la contrasena de Samba para el usuario
+  ansible.builtin.shell: "(echo '{{ samba_user_password }}'; echo '{{ samba_user_password }}') | smbpasswd -s -a {{ samba_user }}"
+  changed_when: false # Evita que esta tarea siempre aparece como "cambiada"
+
+- name: Crear el directorio compartido
+  ansible.builtin.file:
+    path: "{{ samba_shared_dir }}"
+    state: directory
+    owner: root
+    group: "{{ samba_group }}"
+    mode: '0775'
+
+- name: Configurar Samba para compartir el directorio
+  ansible.builtin.template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+  notify: Reiniciar Samba
+
+- name: Asegurar que el servicio Samba este iniciado y habilitado
+  ansible.builtin.service:
+    name: smbd
+    state: started
+    enabled: yes

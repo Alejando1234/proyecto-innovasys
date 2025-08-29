@@ -1,0 +1,23 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for roles/apache
+- name: Asegurar que Apache2 este instalado
+  ansible.builtin.apt:
+    name: apache2
+    state: present
+    update_cache: yes
+
+- name: Crear pagina de bienvenida desde plantilla
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+    owner: www-data
+    group: www-data
+    mode: '0644'
+  notify: Reiniciar Apache
+
+- name: Asegurar que el servicio Apache2 este iniciado y habilitado
+  ansible.builtin.service:
+    name: apache2
+    state: started
+    enabled: yes
